@@ -39,12 +39,13 @@ int main(void){
 	*GPIOD_MODER = *GPIOD_MODER & ~(3 << (2 * 3));
 	*GPIOD_MODER = *GPIOD_MODER | (1 << (2 * 3));
 
-	// pri ostalih dveh samo pobrišemo
+	
 	// pin 2 -> GPIOJ -> pobrišemo bita 4 in 5
 	// pin 13 -> GPIOI -> pobrišemo bita 26 in 27
 	*GPIOJ_MODER = *GPIOJ_MODER & ~(3 << (2 * 2));
 	*GPIOI_MODER = *GPIOI_MODER & ~(3 << (2 * 13));
-
+	
+	// nastavimo bita 4 in 5, ter 26 in 27
 	*GPIOJ_MODER = *GPIOJ_MODER | (1 << (2 * 2));
 	*GPIOI_MODER = *GPIOI_MODER | (1 << (2 * 13));
 
@@ -72,7 +73,8 @@ int main(void){
 			*GPIOD_ODR = *GPIOD_ODR | (1 << 3); // on 1
 			delay(5000000);
 		}else{
-			// vse ugasnene
+			// vse ugasnene (pri J in I mora biti na izhodu 0, da gori, zato tukaj
+			// settamo na 1, da ugasne)
 			*GPIOD_ODR = *GPIOD_ODR & ~(1 << 3);
 			*GPIOJ_ODR = *GPIOJ_ODR | (1 << 2);
 			*GPIOI_ODR = *GPIOI_ODR | (1 << 13);
