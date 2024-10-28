@@ -76,13 +76,6 @@ int main(){
 	GPIOI_CLK_ENABLE();
 	GPIOJ_CLK_ENABLE();
 
-	//PIN 3 -> a, b, c, d - 3
-	// brisemo bita 6 in 7
-//	GPIOD->MODER = GPIOD->MODER & ~(3 << (2 * 3));
-	// postavimo 6 na 1 in 7 na 0 (01)
-//  GPIOD->MODER = GPIOD->MODER | (1 << (2 * 3));
-
-
 	// pin PD3 IN PI13 inicializiramo kot izhod push-pull brez uporov
 	GPIO_Init(GPIOD, 3, GPIO_MODE_OUTPUT, GPIO_OUTPUT_TYPE_PUSH_PULL, GPIO_SPEED_LOW, GPIO_NO_PULL);
 
@@ -91,7 +84,7 @@ int main(){
 	// pin PJ2 kot izhod open-drain s pull-up
 	GPIO_Init(GPIOJ, 2, GPIO_MODE_OUTPUT, GPIO_OUTPUT_TYPE_OPEN_DRAIN, GPIO_SPEED_LOW, GPIO_PULL_UP);
 
-	// PIN PC13
+	// PIN PC13 - ? - push pull?/open-drain?
 	GPIO_Init(GPIOC, 13, GPIO_MODE_INPUT, GPIO_OUTPUT_TYPE_PUSH_PULL, GPIO_SPEED_LOW, GPIO_NO_PULL);
 
 
