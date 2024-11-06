@@ -49,7 +49,7 @@ typedef struct {
 
 #define GPIO_NO_PULL 0
 #define GPIO_PULL_UP 1
-#define GPIO_PULL_DOWN 1
+#define GPIO_PULL_DOWN 2 // tukaj je bila napaka
 
 #define GPIO_SPEED_LOW 0
 #define GPIO_SPEED_MEDIUM 1
