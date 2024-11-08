@@ -136,29 +136,61 @@ int main(void)
 
   while (1){
 
-	  // več teh prizgiRdečo, da bolje dela... ?
-
+	  // več teh prizgiRdečo, da bolje dela, tudi delaye raje razdelimo na 50
 	  prizgiRdeco();
 
 	  // obe zeleni
 
 	  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_3, ENABLE); // on 1
-	  HAL_Delay(250);
+	  // delay 250 ubistvu, razdelil na 50 da prime gumb
+	  HAL_Delay(50);
+	  prizgiRdeco();
+	  HAL_Delay(50);
+	  prizgiRdeco();
+	  HAL_Delay(50);
+	  prizgiRdeco();
+	  HAL_Delay(50);
+	  prizgiRdeco();
+	  HAL_Delay(50);
 
 	  prizgiRdeco();
 
 	  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_3, DISABLE); // off 1
 	  HAL_GPIO_WritePin(GPIOJ, GPIO_PIN_2, DISABLE); // on 2
-	  HAL_Delay(250);
+	  HAL_Delay(50);
+	  prizgiRdeco();
+	  HAL_Delay(50);
+	  prizgiRdeco();
+	  HAL_Delay(50);
+	  prizgiRdeco();
+	  HAL_Delay(50);
+	  prizgiRdeco();
+	  HAL_Delay(50);
 
 	  prizgiRdeco();
 	  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_3, ENABLE); // on 1
-	  HAL_Delay(250);
+	  HAL_Delay(50);
+	  prizgiRdeco();
+	  HAL_Delay(50);
+	  prizgiRdeco();
+	  HAL_Delay(50);
+	  prizgiRdeco();
+	  HAL_Delay(50);
+	  prizgiRdeco();
+	  HAL_Delay(50);
 
 	  prizgiRdeco();
 	  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_3, DISABLE); // off 1
 	  HAL_GPIO_WritePin(GPIOJ, GPIO_PIN_2, ENABLE); // off 2
-	  HAL_Delay(250);
+	  HAL_Delay(50);
+	  prizgiRdeco();
+	  HAL_Delay(50);
+	  prizgiRdeco();
+	  HAL_Delay(50);
+	  prizgiRdeco();
+	  HAL_Delay(50);
+	  prizgiRdeco();
+	  HAL_Delay(50);
   }
 
 
