@@ -227,9 +227,11 @@ void EXTI15_10_IRQHandler(){
 			i++;
 			if(i % 4 == 1){ //
 				HAL_GPIO_WritePin(GPIOD, GPIO_PIN_3, ENABLE); // on 1
+				HAL_GPIO_WritePin(GPIOJ, GPIO_PIN_2, DISABLE); // on 2
 				pritiskStartTick = currentTick;
 			}else if(i % 4 == 3){
 				HAL_GPIO_WritePin(GPIOD, GPIO_PIN_3, DISABLE); // off 1
+				HAL_GPIO_WritePin(GPIOJ, GPIO_PIN_2, ENABLE); // off 2
 			}
 
 			// spustimo gumb (prva fronta prvega pritiska)
