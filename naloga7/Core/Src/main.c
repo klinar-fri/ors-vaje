@@ -82,7 +82,8 @@ uint32_t get_time() {
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-#define SIZE 12500 // 50000 / 4 = 12500 ali 32000/ 4 = 8000
+// 50000 / 4 = 12500 ali 32000/ 4 = 8000
+#define SIZE 12500 
 uint32_t source[SIZE];
 uint32_t destination[SIZE];
 
