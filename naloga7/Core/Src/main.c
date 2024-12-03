@@ -134,7 +134,7 @@ int main(void)
   dma1_struct.Init.MemDataAlignment = DMA_MDATAALIGN_WORD;
   dma1_struct.Init.Mode = DMA_NORMAL;
   dma1_struct.Init.Priority = DMA_PRIORITY_LOW;
-  dma1_struct.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+  dma1_struct.Init.FIFOMode = DMA_FIFOMODE_DISABLE; // DMA_FIFOMODE_ENABLE / DISABLE je bil rezultat isti ?
   dma1_struct.Init.FIFOThreshold = DMA_FIFO_THRESHOLD_1QUARTERFULL;
   HAL_DMA_Init(&dma1_struct);
 
