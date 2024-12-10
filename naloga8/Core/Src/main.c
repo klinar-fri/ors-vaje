@@ -90,6 +90,26 @@ uint32_t get_time() {
 }
 
 
+/* Declare a global flag to track DMA completion */
+volatile uint8_t dma_transfer_complete = 0;
+
+/* DMA Complete Callback */
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {
+    if (huart->Instance == USART3) {
+        dma_transfer_complete = 1; // Mark transfer as complete
+    }
+}
+
+/* IRQ Handlers */
+void DMA1_Stream0_IRQHandler(void) {
+    HAL_DMA_IRQHandler(&dma1_struct);
+}
+
+void USART3_IRQHandler(void) {
+    HAL_UART_IRQHandler(&uart);
+}
+
+
 /* USER CODE END 0 */
 
 /**
@@ -180,24 +200,65 @@ int main(void)
   __HAL_LINKDMA(&uart, hdmatx, dma1_struct);
 
 
+  HAL_NVIC_SetPriority(DMA1_Stream0_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Stream0_IRQn);
 
-  /* IZMERJENA CASA
-   * HAL_UART_TRANSMIT: 3475016µs
-   * HAL_UART_TRANSMIT_DMA: 3474854µs ~ 3.5 sekund
-  */
+  HAL_NVIC_SetPriority(USART3_IRQn, 1, 0);
+  HAL_NVIC_EnableIRQ(USART3_IRQn);
+
+
+
+  /*
+  ******************* IZMERJENA CASA: ****************
+   * HAL_UART_TRANSMIT: 3475016µ ~ 3.5 sekund		*
+   * HAL_UART_TRANSMIT_DMA: 3474854µs ~ 3.5 sekund	*
+  ****************************************************
+ */
 
   uint8_t txt[40000];
   for(int i = 0; i < 40000; i++){
 	  txt[i] = 'K';
   }
 
-  //start
-  start_timer();
-  HAL_UART_Transmit_DMA(&uart, txt, sizeof(txt));
-  //HAL_UART_Transmit(&uart, txt, sizeof(txt), HAL_MAX_DELAY);
 
-  // utripaj // ne dela ?
-  while(HAL_DMA_PollForTransfer(&dma1_struct, HAL_DMA_FULL_TRANSFER, HAL_MAX_DELAY) != HAL_OK){
+  /* CHAT GPT - pomoč, moja rešitev ne deluje ?
+   - ni mi cist jasn kako nardit to brez da bi prekinu prenos,
+   in brez prekinitev
+
+   *
+   *
+   // start
+    start_timer();
+    HAL_UART_Transmit_DMA(&uart, txt, sizeof(txt));
+
+    // gre v loop sam če je HAL_MAX_DELAY = 0, potem pa prenese samo 3 znake od 40000 ?
+
+    while (HAL_DMA_PollForTransfer(&dma1_struct, HAL_DMA_FULL_TRANSFER, HAL_MAX_DELAY) != HAL_OK) {
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_3, ENABLE); // on 1
+		HAL_GPIO_WritePin(GPIOJ, GPIO_PIN_2, DISABLE); // on 2
+		HAL_GPIO_WritePin(GPIOI, GPIO_PIN_13, DISABLE); // on 3
+		HAL_Delay(100);
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_3, DISABLE); // off 1
+		HAL_GPIO_WritePin(GPIOJ, GPIO_PIN_2, ENABLE); // off 2
+		HAL_GPIO_WritePin(GPIOI, GPIO_PIN_13, ENABLE); // off 3
+		HAL_Delay(100);
+    }
+
+    // Stop Timer
+    stop_timer();
+
+    uint32_t izmerjen_cas_v_us = get_time();
+   *
+  */
+
+  // Start
+  start_timer();
+  dma_transfer_complete = 0;
+  //HAL_UART_Transmit(&uart, txt, sizeof(txt), HAL_MAX_DELAY);
+  HAL_UART_Transmit_DMA(&uart, txt, sizeof(txt));
+
+  // utripaj
+  while(!dma_transfer_complete){
 	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_3, ENABLE); // on 1
 	HAL_GPIO_WritePin(GPIOJ, GPIO_PIN_2, DISABLE); // on 2
 	HAL_GPIO_WritePin(GPIOI, GPIO_PIN_13, DISABLE); // on 3
@@ -207,7 +268,7 @@ int main(void)
 	HAL_GPIO_WritePin(GPIOI, GPIO_PIN_13, ENABLE); // off 3
 	HAL_Delay(100);
   }
-  uart.gState = HAL_UART_STATE_READY;
+
   stop_timer();
 
   uint32_t izmerjen_cas_v_us = get_time();
